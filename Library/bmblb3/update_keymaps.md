@@ -26,4 +26,10 @@ command.update {
   key = "Ctrl-Shift-+",
   priority = 100
 }
+
+command.update {
+  name = "Share: Page",
+  key = "Ctrl-Alt-p",
+  priority = 100
+}
 ```
