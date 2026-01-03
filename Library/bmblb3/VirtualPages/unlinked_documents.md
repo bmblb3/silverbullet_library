@@ -8,7 +8,7 @@ unlinked_documents = {}
 function unlinked_documents.get()
   local all_docs = query[[
     from index.tag "document"
-    where not (name.match("js$") or name.match("excalidraw$"))
+    where not (name.match(".js") or name.match("excalidraw$"))
     select name
   ]]
 
