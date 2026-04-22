@@ -1,7 +1,5 @@
----
-name: Library/bmblb3/style
-tags: meta/library
----
+#meta
+
 ```space-style
 /* priority: 10 */
 
