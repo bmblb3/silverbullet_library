@@ -1,7 +1,5 @@
----
-name: Library/bmblb3/VirtualPages/unlinked_documents
-tags: meta/library
----
+#meta
+
 ```space-lua
 unlinked_documents = {}
 
