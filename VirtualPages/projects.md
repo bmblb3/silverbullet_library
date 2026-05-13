@@ -4,28 +4,32 @@
 virtualPage.define {
   pattern = "projects:",
   run = function(_)
-    -- Ongoing projects
-    local result = {"# Ongoing projects\n"}
-
+    
+    -- Tracked projects
+    local result = {"# Tracked projects\n"}
     local ongoing_projects = query[[
-        from index.tag "page"
-        where
-            table.includes(tags, "projects")
-            and table.includes(tags, "ongoing")
-        order by lastModified desc
+        from page = index.tag "page"
+        where (
+          ( page.name.match("^Project") or table.includes(page.tags, "project") )
+          and table.includes(page.tags, "track")
+        )
+        order by page.name
     ]]
 
     for _, project in ipairs(ongoing_projects) do
         table.insert(result, templates.pageItem(project))
     end
 
-    -- All projects
-    table.insert(result, "\n# All projects\n")
+    -- Rest of the projects
+    table.insert(result, "\n# Rest of the projects\n")
 
     local projects = query[[
-        from index.tag "page"
-        where table.includes(tags, "projects")
-        order by lastModified desc
+        from page = index.tag "page"
+        where (
+          ( page.name.match("^Project") or table.includes(page.tags, "project") )
+          and not table.includes(page.tags, "track")
+        )
+        order by page.name
     ]]
 
     for _, project in ipairs(projects) do
