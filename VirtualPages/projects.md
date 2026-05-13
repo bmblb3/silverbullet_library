@@ -1,38 +1,42 @@
 #meta
 
 ```space-lua
+projects = {}
+
+function projects.unfinished()
+  return query[[
+      from page = index.tag "page"
+      where (
+        page.name.match("^Project")
+        and not table.includes(page.tags, "finished")
+      )
+      order by page.name
+  ]]
+end
+
+function projects.finished()
+  return query[[
+      from page = index.tag "page"
+      where (
+        page.name.match("^Project")
+        and table.includes(page.tags, "finished")
+      )
+      order by page.name
+  ]]
+end
+
 virtualPage.define {
   pattern = "projects:",
   run = function(_)
-    
-    -- Tracked projects
-    local result = {"# Tracked projects\n"}
-    local ongoing_projects = query[[
-        from page = index.tag "page"
-        where (
-          ( page.name.match("^Project") or table.includes(page.tags, "project") )
-          and table.includes(page.tags, "track")
-        )
-        order by page.name
-    ]]
+    local result = {"# Unfinished projects\n"}
 
-    for _, project in ipairs(ongoing_projects) do
+    for _, project in ipairs(projects.unfinished()) do
         table.insert(result, templates.pageItem(project))
     end
 
-    -- Rest of the projects
-    table.insert(result, "\n# Rest of the projects\n")
+    table.insert(result, "\n# Finished projects\n")
 
-    local projects = query[[
-        from page = index.tag "page"
-        where (
-          ( page.name.match("^Project") or table.includes(page.tags, "project") )
-          and not table.includes(page.tags, "track")
-        )
-        order by page.name
-    ]]
-
-    for _, project in ipairs(projects) do
+    for _, project in ipairs(projects.finished()) do
         table.insert(result, templates.pageItem(project))
     end
 
