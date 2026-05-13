@@ -31,13 +31,13 @@ virtualPage.define {
     local result = {"# Unfinished projects\n"}
 
     for _, project in ipairs(projects.unfinished()) do
-        table.insert(result, templates.pageItem(project))
+        table.insert(result, templates.fullPageItem(project))
     end
 
     table.insert(result, "\n# Finished projects\n")
 
     for _, project in ipairs(projects.finished()) do
-        table.insert(result, templates.pageItem(project))
+        table.insert(result, templates.fullPageItem(project))
     end
 
     return table.concat(result)
