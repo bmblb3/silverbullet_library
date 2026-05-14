@@ -89,12 +89,13 @@ local function show_invalid_markdown_tasks(tasks)
 end
 
 local function show_sync_failure(response)
-  if response.error_kind ~= "invalid_markdown" then
-    editor.flashNotification(response.message, "warning")
-    return
+  if response.error_kind == "invalid_markdown" then
+    show_invalid_markdown_tasks(response.invalid_markdown_tasks)
+  elseif response.error_kind == "unavailable_in_taskwarrior" then
+    show_invalid_markdown_tasks(response.unavailable_in_taskwarrior_tasks)
+  else
+    editor.flashNotification(tostring(response), "warning")
   end
-
-  show_invalid_markdown_tasks(response.invalid_markdown_tasks)
 end
 
 local function sync_taskwarrior()
