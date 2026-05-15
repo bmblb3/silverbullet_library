@@ -8,9 +8,13 @@ user-facing system.
 
 ## Repository Layout
 
-- `settings.md`: SilverBullet `#meta` page for key bindings and action buttons.
-  It currently defines history navigation shortcuts, an inbox button, and a
-  Taskwarrior sync button.
+- `settings.md`: SilverBullet `#meta` page for key bindings and general action
+  buttons. It currently defines history navigation shortcuts and an inbox
+  button.
+- `taskbridge.md`: SilverBullet `#meta` page for the Taskwarrior bridge sync
+  action button and its result notifications.
+- `taskbridge/behavior-spec.md`: behavior reference for Taskwarrior bridge sync
+  outcomes and structured error messages.
 - `style.md`: SilverBullet `#meta` page with `space-style` CSS. Keep styling
   scoped and minimal.
 - `Page Templates/Quick Note.md`: page template for quick notes. It creates
