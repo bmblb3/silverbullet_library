@@ -67,7 +67,8 @@ virtualPage.define {
       ),
       ("# - [Documents that are not linked anywhere](udocs:) %s"):format(
         index_page.count(unlinked_count, index_page.unlinkedColor(unlinked_count))
-      )
+      ),
+      ""
     }
 
     return table.concat(result, "\n")
