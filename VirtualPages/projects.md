@@ -18,7 +18,7 @@ function projects.archived()
   return query[[
       from page = index.tag "page"
       where (
-        page.name.match("^Projects/Archived")
+        page.name.match("^Projects/Archived/")
       )
       order by page.name
   ]]
@@ -41,9 +41,21 @@ function projects.openTaskCountsByPage()
   return counts
 end
 
+function projects.displayName(page)
+  if page:startsWith("Projects/Archived/") then
+    return page:sub(string.len("Projects/Archived/") + 1)
+  end
+
+  if page:startsWith("Projects/") then
+    return page:sub(string.len("Projects/") + 1)
+  end
+
+  return page
+end
+
 function projects.row(project, open_task_counts, color_when_open, color_when_empty)
   local page = tostring(project.name)
-  local label = page:gsub("^Projects/Archived/", ""):gsub("^Projects/", "")
+  local label = projects.displayName(page)
   local count = open_task_counts[page] or 0
   local color = color_when_empty
 
@@ -51,7 +63,7 @@ function projects.row(project, open_task_counts, color_when_open, color_when_emp
     color = color_when_open
   end
 
-  return ("- [[%s|%s]] <span style=\"color: %s\">#%d</span>\n"):format(page, label, color, count)
+  return ("- [%s](<%s>) <span style=\"color: %s\">#%d</span>\n"):format(label, page, color, count)
 end
 
 virtualPage.define {
