@@ -16,12 +16,12 @@ end
 virtualPage.define {
   pattern = "inbox:",
   run = function(_)
-    local result = {"# Inbox\n"}
+    local result = {"# Inbox"}
 
-    -- for _, page in ipairs(inbox_pages()) do
-    --     table.insert(result, templates.fullPageItem(page))
-    -- end
-    return table.concat(result)
+    for _, page in ipairs(inbox_pages.get()) do
+        table.insert(result, ("- [[%s]]"):format(page.name))
+    end
+    return table.concat(result, "\n")
   end
 }
 ```

@@ -63,26 +63,26 @@ function projects.row(project, open_task_counts, color_when_open, color_when_emp
     color = color_when_open
   end
 
-  return ("- [%s](<%s>) <span style=\"color: %s\">#%d</span>\n"):format(label, page, color, count)
+  return ("- [[%s|%s]] <span style=\"color: %s\">#%d</span>"):format(page, label, color, count)
 end
 
 virtualPage.define {
   pattern = "projects:",
   run = function(_)
     local open_task_counts = projects.openTaskCountsByPage()
-    local result = {"# Active projects\n"}
+    local result = {"# Active projects"}
 
     for _, project in ipairs(projects.active()) do
         table.insert(result, projects.row(project, open_task_counts, "green", "red"))
     end
 
-    table.insert(result, "\n# Archived projects\n")
+    table.insert(result, "# Archived projects")
 
     for _, project in ipairs(projects.archived()) do
         table.insert(result, projects.row(project, open_task_counts, "red", "green"))
     end
 
-    return table.concat(result)
+    return table.concat(result, "\n")
   end
 }
 ```
