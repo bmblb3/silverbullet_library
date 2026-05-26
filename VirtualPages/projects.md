@@ -50,7 +50,7 @@ function projects.row(project, open_task_counts, color_when_open, color_when_emp
     color = color_when_open
   end
 
-  return ("- [[%s]] <span style=\"color: %s\">#%d</span>\n"):format(page, color, count)
+  return ("- [[%s|%s]] <span style=\"color: %s\">#%d</span>\n"):format(page, page, color, count)
 end
 
 virtualPage.define {
