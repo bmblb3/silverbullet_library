@@ -55,18 +55,17 @@ virtualPage.define {
     local unlinked_count = #unlinked_documents.get()
 
     local result = {
-      "# Index",
       "",
-      ("- [Inbox](inbox:) %s"):format(index_page.count(inbox_count)),
-      ("- [Projects](/projects:) %s %s"):format(
+      ("# - [Inbox](inbox:) %s"):format(index_page.count(inbox_count)),
+      ("# - [Projects](/projects:) %s %s"):format(
         index_page.count(project_green_count, "green"),
         index_page.count(project_red_count, "red")
       ),
-      ("- [Tasks](/tasks:) %s %s"):format(
+      ("# - [Tasks](/tasks:) %s %s"):format(
         index_page.count(tracked_count, "green"),
         index_page.count(untracked_count, "red")
       ),
-      ("- [Documents that are not linked anywhere](udocs:) %s"):format(
+      ("# - [Documents that are not linked anywhere](udocs:) %s"):format(
         index_page.count(unlinked_count, index_page.unlinkedColor(unlinked_count))
       )
     }
