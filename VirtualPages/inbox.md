@@ -1,7 +1,9 @@
 #meta
 
 ```space-lua
-function inbox_pages()
+inbox_pages = {}
+
+function inbox_pages.get()
   return query[[
       from page = index.tag "page"
       where (
@@ -12,17 +14,13 @@ function inbox_pages()
   ]]
 end
 
-function inbox_page.row(page)
-  return ("- [[%s]]"):format(page.name)
-end
-
 virtualPage.define {
   pattern = "inbox:",
   run = function(_)
     local result = {"# Inbox\n"}
 
     for _, page in ipairs(inbox_pages()) do
-        table.insert(result, inbox_page.row(page))
+        table.insert(result, templates.fullPageItem(page))
     end
     return table.concat(result)
   end
