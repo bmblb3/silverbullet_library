@@ -43,16 +43,16 @@ virtualPage.define {
     local tracked = tasks.tracked()
     local untracked = tasks.untracked()
     local result = {
-      tasks.heading("# Tracked in taskwarrior", #tracked, "green", "red")
+      tasks.heading("# Not Tracked in taskwarrior", #untracked, "red", "green")
     }
 
-    for _, task in ipairs(tracked) do
+    for _, task in ipairs(untracked) do
       table.insert(result, tasks.row(task))
     end
 
-    table.insert(result, tasks.heading("# Not Tracked in taskwarrior", #untracked, "red", "green"))
+    table.insert(result, tasks.heading("# Tracked in taskwarrior", #tracked, "green", "red"))
 
-    for _, task in ipairs(untracked) do
+    for _, task in ipairs(tracked) do
       table.insert(result, tasks.row(task))
     end
 
