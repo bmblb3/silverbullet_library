@@ -43,6 +43,7 @@ end
 
 function projects.row(project, open_task_counts, color_when_open, color_when_empty)
   local page = tostring(project.name)
+  local label = page:gsub("^Projects/Archived/", ""):gsub("^Projects/", "")
   local count = open_task_counts[page] or 0
   local color = color_when_empty
 
@@ -50,7 +51,7 @@ function projects.row(project, open_task_counts, color_when_open, color_when_emp
     color = color_when_open
   end
 
-  return ("- [[%s|%s]] <span style=\"color: %s\">#%d</span>\n"):format(page, page, color, count)
+  return ("- [[%s|%s]] <span style=\"color: %s\">#%d</span>\n"):format(page, label, color, count)
 end
 
 virtualPage.define {
