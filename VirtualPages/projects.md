@@ -8,17 +8,18 @@ function projects.active()
       from page = index.tag "page"
       where (
         page.name.match("^Projects/")
-        and not page.name.match("^Projects/Archived")
+        and page.active
       )
       order by page.name
   ]]
 end
 
-function projects.archived()
+function projects.inactive()
   return query[[
       from page = index.tag "page"
       where (
-        page.name.match("^Projects/Archived/")
+        page.name.match("^Projects/")
+        and not page.active
       )
       order by page.name
   ]]
@@ -42,15 +43,7 @@ function projects.openTaskCountsByPage()
 end
 
 function projects.displayName(page)
-  if page:startsWith("Projects/Archived/") then
-    return page:sub(string.len("Projects/Archived/") + 1)
-  end
-
-  if page:startsWith("Projects/") then
-    return page:sub(string.len("Projects/") + 1)
-  end
-
-  return page
+  return page:sub(string.len("Projects/") + 1)
 end
 
 function projects.row(project, open_task_counts, color_when_open, color_when_empty)
@@ -76,9 +69,9 @@ virtualPage.define {
         table.insert(result, projects.row(project, open_task_counts, "green", "red"))
     end
 
-    table.insert(result, "# Archived projects")
+    table.insert(result, "# Inactive projects")
 
-    for _, project in ipairs(projects.archived()) do
+    for _, project in ipairs(projects.inactive()) do
         table.insert(result, projects.row(project, open_task_counts, "red", "green"))
     end
 
