@@ -31,7 +31,7 @@ end
 
 function tasks.row(task)
   if task.page ~= nil then
-    return ("- [[%s]] %s"):format(tostring(task.page), tostring(task.name))
+    return ("- [%s] [[%s]] %s"):format(tostring(task.state), tostring(task.page), tostring(task.name))
   end
 
   return ("- %s"):format(tostring(task.name))
