@@ -2,6 +2,8 @@
 
 # Taskbridge action button
 ```space-lua
+local bridge_sync_url = "host.docker.internal:3000/api/sync"
+
 local function set_read_only(enabled)
   editor.setUiOption("forcedROMode", enabled)
   editor.rebuildEditorState()
@@ -187,22 +189,67 @@ local function show_unstructured_failure(process, parse_error)
   })
 end
 
-local function sync_taskwarrior()
-  local process = shell.run("bridge", {"sync", "--space", "/space"})
-  local output = process.stdout
-
-  if process.code ~= 0 then
-    output = process.stderr
+local function stringify(value)
+  if value == nil then
+    return nil
   end
 
-  local response, parse_error = parse_json(output)
+  if type(value) == "string" then
+    return value
+  end
+
+  local ok, encoded = pcall(function()
+    return js.window.JSON.stringify(value)
+  end)
+
+  if ok then
+    return tostring(encoded)
+  end
+
+  return tostring(value)
+end
+
+local function response_body_as_json(body)
+  if body == nil then
+    return nil, "Bridge returned no response body"
+  end
+
+  if type(body) ~= "string" then
+    return body, nil
+  end
+
+  return parse_json(body)
+end
+
+local function show_unstructured_http_failure(http_response, parse_error)
+  local detail = present(
+    stringify(http_response and http_response.body),
+    parse_error or ("HTTP status " .. tostring(http_response and http_response.status))
+  )
+
+  editor.flashNotification(("Taskwarrior sync failed\n%s"):format(detail), "error", {
+    timeout = 0,
+  })
+end
+
+local function sync_taskwarrior()
+  editor.flashNotification(("Sync URL: %s"):format(tostring(bridge_sync_url)))
+
+  local http_response = net.proxyFetch(tostring(bridge_sync_url), {
+    method = "POST",
+    headers = {
+      ["content-type"] = "application/json",
+    },
+  })
+  
+  local response, parse_error = response_body_as_json(http_response and http_response.body)
 
   if response == nil then
-    show_unstructured_failure(process, parse_error)
+    show_unstructured_http_failure(http_response, parse_error)
     return
   end
 
-  if process.code == 0 then
+  if http_response.ok and response.ok ~= false then
     show_sync_success(response)
     return
   end

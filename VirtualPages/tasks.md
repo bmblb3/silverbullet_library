@@ -6,7 +6,7 @@ tasks = {}
 function tasks.tracked()
   return query[[
       from t = index.tag "task"
-      where t.name.match("https://taskking.732685803.xyz")
+      where t.name.match("https://narnia.wisent-salak.ts.net:55183")
       order by t.page
   ]]
 end
@@ -14,7 +14,7 @@ end
 function tasks.untracked()
   return query[[
       from t = index.tag "task"
-      where not t.name.match("https://taskking.732685803.xyz")
+      where not t.name.match("https://narnia.wisent-salak.ts.net:55183")
       order by t.page
   ]]
 end
