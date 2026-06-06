@@ -26,7 +26,7 @@ function index_page.projectCounts()
     end
   end
 
-  for _, project in ipairs(projects.archived()) do
+  for _, project in ipairs(projects.inactive()) do
     local page = tostring(project.name)
 
     if (open_task_counts[page] or 0) > 0 then
